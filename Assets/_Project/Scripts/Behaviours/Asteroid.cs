@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿using System;
+using _Project.Scripts.Managers;
+using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace _Project.Scripts.Behaviours
 {
@@ -39,15 +42,21 @@ namespace _Project.Scripts.Behaviours
 
         private void Split()
         {
-            for (int i = 0; i < Random.Range(2, _maxFragmentCount); i++)
+            int numberOfFragments = Random.Range(2, _maxFragmentCount);
+            
+            for (int i = 0; i < numberOfFragments; i++)
             {
                 Asteroid asteroidInstance = Instantiate(this, transform.position, transform.rotation);
                 asteroidInstance.SetUp(_splitsLeft - 1, _initialSpeed * 1.25F);
             }
             
+            EventManager.OnAsteroidSplit.Invoke(numberOfFragments);
+            
             Destroy(gameObject);
         }
 
         private Vector2 GetRandomVector2() => Random.insideUnitCircle.normalized;
+
+        private void OnDestroy() => EventManager.OnAsteroidDestroyed.Invoke(-1);
     }
 }

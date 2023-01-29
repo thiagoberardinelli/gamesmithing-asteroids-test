@@ -1,10 +1,14 @@
 using _Project.Scripts.Behaviours;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace _Project.Scripts.Managers
 {
     public class GameManager : MonoBehaviour
     {
+        private const int AsteroidsInitialCount = 3;
+        private const int WaveIncrement = 2;
+        
         [Space(2.5F)]
         [SerializeField] private Camera mainCamera;
         
@@ -13,12 +17,26 @@ namespace _Project.Scripts.Managers
         [SerializeField] private Ship shipPrefab;
 
         private int _currentWave = 1;
-        
-        private int _asteroidsInWave = 3;
-        private int _waveIncrement = 2;
-        
+        public int _currentAsteroidsInWave;
+
         private Ship _ship;
 
+        #region Event Register
+
+        private void Awake()
+        {
+            EventManager.OnAsteroidDestroyed += UpdateAsteroidsCount;
+            EventManager.OnAsteroidSplit += UpdateAsteroidsCount;
+        }
+
+        private void OnDestroy()
+        {
+            EventManager.OnAsteroidDestroyed -= UpdateAsteroidsCount;
+            EventManager.OnAsteroidSplit -= UpdateAsteroidsCount;
+        }
+
+        #endregion
+        
         private void Start()
         {
             CreatePlayer();
@@ -33,13 +51,12 @@ namespace _Project.Scripts.Managers
 
         private void StartNewWave()
         {
-            if (_currentWave != 1)
-                _asteroidsInWave += _waveIncrement;
+            _currentAsteroidsInWave = AsteroidsInitialCount;
             
-            for (int i = 0; i < _asteroidsInWave; i++)
-            {
-                Asteroid asteroid = Instantiate(asteroidPrefab, RandomPositionInScreen(), Quaternion.identity);
-            }
+            if (_currentWave != 1) _currentAsteroidsInWave += WaveIncrement;
+
+            for (int i = 0; i < _currentAsteroidsInWave; i++)
+                Instantiate(asteroidPrefab, RandomPositionInScreen(), Quaternion.identity);
         }
 
         private Vector3 RandomPositionInScreen()
@@ -49,6 +66,17 @@ namespace _Project.Scripts.Managers
             float posZ = Random.Range(mainCamera.nearClipPlane, mainCamera.farClipPlane);
 
             return mainCamera.ScreenToWorldPoint(new Vector3(posX, posY, posZ));
+        }
+
+        private void UpdateAsteroidsCount(int increment)
+        {
+            _currentAsteroidsInWave += increment;
+
+            if (_currentAsteroidsInWave != 0) return;
+            
+            _currentWave++;
+            
+            StartNewWave();
         }
     }
 }
