@@ -9,15 +9,20 @@ namespace _Project.Scripts.Managers
         private const int AsteroidsInitialCount = 3;
         private const int WaveIncrement = 2;
         
-        [Space(2.5F)]
+        [Header("Scene References")]
         [SerializeField] private Camera mainCamera;
+        [SerializeField] private GameHUD gameHUD;
+
+        [Space(2.5F)] [Header("Gameplay Properties")] 
+        [SerializeField] private int asteroidsPoints;
         
+        [Space(2.5F)]
         [Header("Prefabs references")] 
         [SerializeField] private Asteroid asteroidPrefab;
         [SerializeField] private Ship shipPrefab;
 
         private int _currentWave = 1;
-        public int _currentAsteroidsInWave;
+        private int _currentAsteroidsInWave;
 
         private Ship _ship;
 
@@ -26,12 +31,14 @@ namespace _Project.Scripts.Managers
         private void Awake()
         {
             EventManager.OnAsteroidDestroyed += UpdateAsteroidsCount;
+            EventManager.OnAsteroidDestroyed += UpdateScore;
             EventManager.OnAsteroidSplit += UpdateAsteroidsCount;
         }
 
         private void OnDestroy()
         {
             EventManager.OnAsteroidDestroyed -= UpdateAsteroidsCount;
+            EventManager.OnAsteroidDestroyed -= UpdateScore;
             EventManager.OnAsteroidSplit -= UpdateAsteroidsCount;
         }
 
@@ -78,5 +85,7 @@ namespace _Project.Scripts.Managers
             
             StartNewWave();
         }
+
+        private void UpdateScore(int increment) => gameHUD.UpdatePoints(asteroidsPoints);
     }
 }
