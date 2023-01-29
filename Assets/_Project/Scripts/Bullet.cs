@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace _Project.Scripts
 {
@@ -13,6 +14,12 @@ namespace _Project.Scripts
         {
             if (!IsOffScreen()) return;
             Destroy(gameObject, 0.1F);
+        }
+
+        private void OnCollisionEnter2D(Collision2D other)
+        {
+            if (!other.gameObject.CompareTag("Asteroid")) return;
+            Destroy(gameObject);
         }
 
         private bool IsOffScreen()
