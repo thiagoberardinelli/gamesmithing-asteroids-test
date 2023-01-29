@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using _Project.Scripts.Behaviours;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -15,6 +17,7 @@ namespace _Project.Scripts.Managers
 
         [Space(2.5F)] [Header("Gameplay Properties")] 
         [SerializeField] private int asteroidsPoints;
+        [SerializeField] private int playerLives;
         
         [Space(2.5F)]
         [Header("Prefabs references")] 
@@ -23,9 +26,7 @@ namespace _Project.Scripts.Managers
 
         private int _currentWave = 1;
         private int _currentAsteroidsInWave;
-
-        private Ship _ship;
-
+        
         #region Event Register
 
         private void Awake()
@@ -33,6 +34,7 @@ namespace _Project.Scripts.Managers
             EventManager.OnAsteroidDestroyed += UpdateAsteroidsCount;
             EventManager.OnAsteroidDestroyed += UpdateScore;
             EventManager.OnAsteroidSplit += UpdateAsteroidsCount;
+            EventManager.OnPlayerDeath += RemoveLife;
         }
 
         private void OnDestroy()
@@ -40,20 +42,24 @@ namespace _Project.Scripts.Managers
             EventManager.OnAsteroidDestroyed -= UpdateAsteroidsCount;
             EventManager.OnAsteroidDestroyed -= UpdateScore;
             EventManager.OnAsteroidSplit -= UpdateAsteroidsCount;
+            EventManager.OnPlayerDeath -= RemoveLife;
         }
 
         #endregion
         
         private void Start()
         {
-            CreatePlayer();
+            gameHUD.Initialize(playerLives);
+            
+            StartCoroutine(CreatePlayer());
             StartNewWave();
         }
 
-        private void CreatePlayer()
+        private IEnumerator CreatePlayer(float delay = 0F)
         {
+            yield return new WaitForSeconds(delay);
             Ship playerShip = Instantiate(shipPrefab, Vector2.zero, Quaternion.identity);
-            _ship = playerShip;
+            playerShip.SetInvulnerability();
         }
 
         private void StartNewWave()
@@ -87,5 +93,21 @@ namespace _Project.Scripts.Managers
         }
 
         private void UpdateScore(int increment) => gameHUD.UpdatePoints(asteroidsPoints);
+
+        private void RemoveLife()
+        {
+            if (playerLives != 0)
+            {
+                gameHUD.RemoveLife();
+                StartCoroutine(CreatePlayer(2F));
+            }
+            else
+                GameOver();
+        }
+
+        private void GameOver()
+        {
+            // Do game over
+        }
     }
 }

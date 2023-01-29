@@ -33,9 +33,12 @@ namespace _Project.Scripts.Behaviours
         private void OnCollisionEnter2D(Collision2D other)
         {
             if (!other.gameObject.CompareTag("Bullet")) return;
-            
-            if (_splitsLeft == 0) 
+
+            if (_splitsLeft == 0)
+            {
                 Destroy(gameObject);
+                EventManager.OnAsteroidDestroyed.Invoke(-1);
+            }
             else 
                 Split();
         }
@@ -51,12 +54,11 @@ namespace _Project.Scripts.Behaviours
             }
             
             EventManager.OnAsteroidSplit.Invoke(numberOfFragments);
+            EventManager.OnAsteroidDestroyed.Invoke(-1);
             
             Destroy(gameObject);
         }
 
         private Vector2 GetRandomVector2() => Random.insideUnitCircle.normalized;
-
-        private void OnDestroy() => EventManager.OnAsteroidDestroyed.Invoke(-1);
     }
 }

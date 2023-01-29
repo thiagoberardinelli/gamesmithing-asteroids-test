@@ -154,10 +154,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rgbd: {fileID: 5214007109662646800}
+  spriteRenderer: {fileID: 5214007109662646801}
   thrust: 5
   rotationForce: 150
   bulletSpawnPoint: {fileID: 1785580904346867241}
   bulletPrefab: {fileID: 938219497692683555, guid: d818bd3be0d02b34ca4259f43b6c740d, type: 3}
+  explosionParticleSystem: {fileID: 8892819955821247596, guid: 3d3f85287af70474fabe72aeb2c0e58e, type: 3}
 --- !u!114 &3546748808886349841
 MonoBehaviour:
   m_ObjectHideFlags: 0
