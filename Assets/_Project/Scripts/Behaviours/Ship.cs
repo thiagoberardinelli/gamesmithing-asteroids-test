@@ -1,7 +1,6 @@
-using System;
 using UnityEngine;
 
-namespace _Project.Scripts
+namespace _Project.Scripts.Behaviours
 {
     public class Ship : MonoBehaviour
     {
@@ -17,8 +16,6 @@ namespace _Project.Scripts
 
         private void Update()
         {
-            CheckScreenBounds();
-            
             if (!Input.GetKeyDown(KeyCode.Space) || Time.time < _nextBullet) return;
 
             _nextBullet = Time.time + _fireRate;
@@ -53,25 +50,6 @@ namespace _Project.Scripts
         private void Fire()
         {
             Instantiate(bulletPrefab, bulletSpawnPoint.position, transform.rotation);
-        }
-        
-        private void CheckScreenBounds()
-        {
-            if (Camera.main == null) return;
-            
-            Vector3 viewPortPoint = Camera.main.WorldToViewportPoint(transform.position);
-        
-            if (viewPortPoint.x < 0)
-                viewPortPoint = new Vector3(1F,  viewPortPoint.y, viewPortPoint.z);
-            else if (viewPortPoint.x >= 1.05)
-                viewPortPoint = new Vector3(0F, viewPortPoint.y, viewPortPoint.z);
-            
-            if (viewPortPoint.y < 0)
-                viewPortPoint = new Vector3(viewPortPoint.x,  1F, viewPortPoint.z);
-            else if (viewPortPoint.y >= 1.05F)
-                viewPortPoint = new Vector3(viewPortPoint.x, 0F, viewPortPoint.z);
-            
-            transform.position = Camera.main.ViewportToWorldPoint(viewPortPoint);
         }
 
         private void OnCollisionEnter2D(Collision2D other)

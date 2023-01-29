@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace _Project.Scripts
+namespace _Project.Scripts.Behaviours
 {
     public class Asteroid : MonoBehaviour
     {
@@ -13,7 +13,9 @@ namespace _Project.Scripts
         private void Start()
         {
             if (_splitsLeft >= 2)
-                rgbd.AddRelativeForce(Vector2.right * _initialSpeed, ForceMode2D.Force);
+                rgbd.AddRelativeForce(GetRandomVector2() * _initialSpeed, ForceMode2D.Force);
+
+            rgbd.AddTorque(Random.Range(3F, 10F));
         }
 
         private void SetUp(int splitsLeft, float initialSpeed)
@@ -40,7 +42,7 @@ namespace _Project.Scripts
             for (int i = 0; i < Random.Range(2, _maxFragmentCount); i++)
             {
                 Asteroid asteroidInstance = Instantiate(this, transform.position, transform.rotation);
-                asteroidInstance.SetUp(_splitsLeft - 1, _initialSpeed * 0.75F);
+                asteroidInstance.SetUp(_splitsLeft - 1, _initialSpeed * 1.25F);
             }
             
             Destroy(gameObject);
