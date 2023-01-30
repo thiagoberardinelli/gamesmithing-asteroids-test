@@ -1,24 +1,32 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 
 namespace _Project.Scripts.Managers
 {
     public class GameHUD : MonoBehaviour
     {
-        [Header("UI References")] 
+        [Header("Game Canvas Groups References")]
+        [SerializeField] private CanvasGroup playGameCanvasGroup;
+        [SerializeField] private CanvasGroup gameOverCanvasGroup;
+        [SerializeField] private CanvasGroup gameplayHUDCanvasGroup;
+
+        [Space(2.5F)][Header("UI References")] 
         [SerializeField] private TextMeshProUGUI pointsText;
+        [SerializeField] private TextMeshProUGUI totalPoints;
         [SerializeField] private Transform livesTransform;
 
-        [Space(2.5F)] 
+        [Space(5F)] 
         [SerializeField] private GameObject lifePrefab;
 
-        private int _points;
+        private int _score;
 
-        public void Initialize(int numberOfLives)
+        public void InitializeGameHUD(int numberOfLives)
         {
-            pointsText.text = _points.ToString();
+            playGameCanvasGroup.interactable = false;
+            playGameCanvasGroup.alpha = 0F;
+            gameplayHUDCanvasGroup.alpha = 1F;
+            
+            pointsText.text = _score.ToString();
 
             for (int i = 0; i < numberOfLives; i++)
             {
@@ -28,8 +36,8 @@ namespace _Project.Scripts.Managers
         
         public void UpdatePoints(int increment)
         {
-            _points += increment;
-            pointsText.text = _points.ToString();
+            _score += increment;
+            pointsText.text = _score.ToString();
         }
 
         public void RemoveLife()
@@ -37,6 +45,14 @@ namespace _Project.Scripts.Managers
             int childCount = livesTransform.childCount;
 
             Destroy(livesTransform.GetChild(childCount - 1).gameObject);
+        }
+
+        public void EnableGameOverPanel()
+        {
+            totalPoints.text = _score.ToString();
+            
+            gameOverCanvasGroup.interactable = true;
+            gameOverCanvasGroup.alpha = 1F;
         }
     }
 }

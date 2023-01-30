@@ -1,7 +1,7 @@
-using System;
 using System.Collections;
 using _Project.Scripts.Behaviours;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
 
 namespace _Project.Scripts.Managers
@@ -47,9 +47,9 @@ namespace _Project.Scripts.Managers
 
         #endregion
         
-        private void Start()
+        public void StartGame()
         {
-            gameHUD.Initialize(playerLives);
+            gameHUD.InitializeGameHUD(playerLives);
             
             StartCoroutine(CreatePlayer());
             StartNewWave();
@@ -96,18 +96,19 @@ namespace _Project.Scripts.Managers
 
         private void RemoveLife()
         {
-            if (playerLives != 0)
+            playerLives--;
+            
+            if (playerLives > 0)
             {
                 gameHUD.RemoveLife();
-                StartCoroutine(CreatePlayer(2F));
+                StartCoroutine(CreatePlayer(1.25F));
             }
             else
                 GameOver();
         }
 
-        private void GameOver()
-        {
-            // Do game over
-        }
+        private void GameOver() => gameHUD.EnableGameOverPanel();
+
+        public void RestartGame() => SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }
