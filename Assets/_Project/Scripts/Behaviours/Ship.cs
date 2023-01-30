@@ -7,11 +7,19 @@ namespace _Project.Scripts.Behaviours
 {
     public class Ship : MonoBehaviour
     {
+        [Header("Object References")]
         [SerializeField] private Rigidbody2D rgbd;
         [SerializeField] private SpriteRenderer spriteRenderer;
+        [SerializeField] private Collider2D collider2D;
+        [SerializeField] private Transform bulletSpawnPoint;
+        
+        [Space(2.5F)]
+        [Header("Ship properties")]
         [SerializeField] private float thrust;
         [SerializeField] private float rotationForce;
-        [SerializeField] private Transform bulletSpawnPoint;
+        
+        [Space(2.5F)]
+        [Header("Prefabs")]
         [SerializeField] private GameObject bulletPrefab;
         [SerializeField] private GameObject explosionParticleSystem;
 
@@ -27,6 +35,8 @@ namespace _Project.Scripts.Behaviours
         private void Update()
         {
             if (!Input.GetKeyDown(KeyCode.Space) || Time.time < _nextBullet) return;
+            
+            if (_invulnerable) StopInvulnerability();
 
             _nextBullet = Time.time + _fireRate;
             
@@ -38,7 +48,7 @@ namespace _Project.Scripts.Behaviours
             float horizontalInput = Input.GetAxis("Horizontal");
             float verticalInput = Mathf.Clamp01(Input.GetAxis("Vertical"));
 
-            if (verticalInput != 0 && _invulnerable) StopInvulnerability();
+            if ((verticalInput != 0 || horizontalInput != 0) && _invulnerable) StopInvulnerability();
 
             Rotate(horizontalInput);
             Move(verticalInput);
@@ -92,6 +102,7 @@ namespace _Project.Scripts.Behaviours
             }
 
             _invulnerable = false;
+            StopInvulnerability();
         }
 
         private void StopInvulnerability()
@@ -100,6 +111,7 @@ namespace _Project.Scripts.Behaviours
             _invulnerabilityRoutine = null;
             _invulnerable = false;
             spriteRenderer.enabled = true;
+            collider2D.enabled = true;
         }
     }
 }

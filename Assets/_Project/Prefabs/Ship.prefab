@@ -117,7 +117,7 @@ PolygonCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5214007109662646803}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
@@ -135,12 +135,15 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: -0.25, y: 0.3}
-      - {x: -0.3, y: 0.25}
+    - - {x: 0.09241787, y: 0.29938263}
+      - {x: 0.0069040265, y: 0.30282316}
+      - {x: -0.07761152, y: 0.30366424}
+      - {x: -0.23789133, y: 0.13142891}
+      - {x: -0.30508092, y: -0.04540045}
       - {x: -0.3, y: -0.3}
       - {x: 0.3, y: -0.3}
-      - {x: 0.3, y: 0.25}
-      - {x: 0.25, y: 0.3}
+      - {x: 0.3, y: -0.046427727}
+      - {x: 0.18224509, y: 0.18989827}
 --- !u!114 &8947475327879855151
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -155,9 +158,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rgbd: {fileID: 5214007109662646800}
   spriteRenderer: {fileID: 5214007109662646801}
+  collider2D: {fileID: 6328041142527836181}
+  bulletSpawnPoint: {fileID: 1785580904346867241}
   thrust: 0.5
   rotationForce: 150
-  bulletSpawnPoint: {fileID: 1785580904346867241}
   bulletPrefab: {fileID: 938219497692683555, guid: d818bd3be0d02b34ca4259f43b6c740d, type: 3}
   explosionParticleSystem: {fileID: 8892819955821247596, guid: 3d3f85287af70474fabe72aeb2c0e58e, type: 3}
 --- !u!114 &3546748808886349841
