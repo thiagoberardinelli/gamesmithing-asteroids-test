@@ -98,6 +98,8 @@ namespace _Project.Scripts.Managers
         {
             playerLives--;
             gameHUD.RemoveLife();
+            
+            AudioManager.Instance.PlaySound("ShipExplosion");
 
             if (playerLives > 0)
                 StartCoroutine(CreatePlayer(1.25F));

@@ -39,7 +39,7 @@ namespace _Project.Scripts.Behaviours
             if (_invulnerable) StopInvulnerability();
 
             _nextBullet = Time.time + _fireRate;
-            
+
             Fire();
         }
 
@@ -69,7 +69,11 @@ namespace _Project.Scripts.Behaviours
             transform.Rotate(0, 0, -horizontalInput * rotationForce * Time.deltaTime);
         }
 
-        private void Fire() => Instantiate(bulletPrefab, bulletSpawnPoint.position, transform.rotation);
+        private void Fire()
+        {
+            AudioManager.Instance.PlaySound("Bullet");
+            Instantiate(bulletPrefab, bulletSpawnPoint.position, transform.rotation);
+        }
 
         private void OnCollisionEnter2D(Collision2D other)
         {

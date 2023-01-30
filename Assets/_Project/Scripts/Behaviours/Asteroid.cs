@@ -33,6 +33,8 @@ namespace _Project.Scripts.Behaviours
         {
             if (!other.gameObject.CompareTag("Bullet")) return;
 
+            AudioManager.Instance.PlaySound("RockExplosion");
+            
             if (_splitsLeft == 0)
             {
                 Destroy(gameObject);
