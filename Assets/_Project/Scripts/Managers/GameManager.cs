@@ -97,12 +97,10 @@ namespace _Project.Scripts.Managers
         private void RemoveLife()
         {
             playerLives--;
-            
+            gameHUD.RemoveLife();
+
             if (playerLives > 0)
-            {
-                gameHUD.RemoveLife();
                 StartCoroutine(CreatePlayer(1.25F));
-            }
             else
                 GameOver();
         }

@@ -50,9 +50,12 @@ namespace _Project.Scripts.Managers
         public void EnableGameOverPanel()
         {
             totalPoints.text = _score.ToString();
+
+            gameplayHUDCanvasGroup.alpha = 0F;
             
             gameOverCanvasGroup.interactable = true;
             gameOverCanvasGroup.alpha = 1F;
+            gameOverCanvasGroup.blocksRaycasts = true;
         }
     }
 }

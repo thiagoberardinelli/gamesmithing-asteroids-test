@@ -59,15 +59,11 @@ namespace _Project.Scripts.Behaviours
             transform.Rotate(0, 0, -horizontalInput * rotationForce * Time.deltaTime);
         }
 
-        private void Fire()
-        {
-            Instantiate(bulletPrefab, bulletSpawnPoint.position, transform.rotation);
-        }
+        private void Fire() => Instantiate(bulletPrefab, bulletSpawnPoint.position, transform.rotation);
 
         private void OnCollisionEnter2D(Collision2D other)
         {
             if (!other.gameObject.CompareTag("Asteroid") || _invulnerable) return;
-
             Die();
         }
 
@@ -75,7 +71,9 @@ namespace _Project.Scripts.Behaviours
         {
             EventManager.OnPlayerDeath();
             
-            Instantiate(explosionParticleSystem, transform.position, quaternion.identity);
+            GameObject explosion = Instantiate(explosionParticleSystem, transform.position, quaternion.identity);
+            Destroy(explosion, 1.5F);
+            
             Destroy(gameObject);
         }
 
